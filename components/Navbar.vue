@@ -1,6 +1,6 @@
 <template>
   <VAppBar>
-    <template v-slot:title> CRUD NUXT 3 </template>
+    <template v-slot:title> CRUD ARCHIVOS NUXT 3 </template>
   </VAppBar>
 </template>
 

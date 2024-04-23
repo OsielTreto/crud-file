@@ -12,7 +12,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     MONGO_URI: process.env.MONGO_URI,
   },
-  // imports: {
-  //   dirs: ["stores"],
-  // },
+  imports: {
+    dirs: ["stores"],
+  },
 });
