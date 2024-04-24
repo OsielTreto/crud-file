@@ -1,8 +1,8 @@
 <template>
   <VApp>
-    <Navbar />
     <VMain>
       <NuxtPage />
+      <DialogMessage />
     </VMain>
   </VApp>
 </template>

@@ -15,10 +15,10 @@ export const useFilesStore = defineStore("files", {
   actions: {
     async getFiles() {
       try {
-        const { data } = await axios.get("/api/get-list-files");
-        console.log("data ", data);
+        const { data } = await axios.get("http://localhost:4000/data");
 
-        this.files = (data as any).archivos;
+        this.files = data as any;
+        console.log("getFiles ");
       } catch (error) {
         console.error("Error:", error);
       }
@@ -26,12 +26,33 @@ export const useFilesStore = defineStore("files", {
 
     async addFiles(body: {
       nombre: string;
-      extension: string;
-      fechaCarga: string;
+      fechaReporte: string;
+      file: string;
     }) {
       try {
-        await axios.post("/api/add-files", body);
-        navigateTo("/");
+        const messageStore = useMessageStore();
+
+        // await axios.post("/api/add-files", body, {
+        const response = await axios.post("http://localhost:4000/data", body);
+        console.log("response ", response.status);
+
+        if (response.status == 200 || response.status == 201) {
+          messageStore.setMessage(
+            "success",
+            "Alta exitosa",
+            "El reporte se ha guardado con exito"
+          );
+          console.log("Alta exitosa");
+        } else {
+          messageStore.setMessage(
+            "error",
+            "A ocurrido un error",
+            "Error al guardar el reporte"
+          );
+          console.log("Error");
+        }
+
+        // navigateTo("/");
       } catch (error) {
         console.error("Error:", error);
       }
@@ -39,10 +60,28 @@ export const useFilesStore = defineStore("files", {
 
     async deleteFiles(id: string) {
       try {
-        await axios.delete(`/api/delete-files/${id}`);
-        this.files = this.files.filter((val) => val._id !== id);
+        const messageStore = useMessageStore();
 
-        navigateTo("/");
+        // await axios.delete(`/api/delete-files/${id}`);
+        const response = await axios.delete(`http://localhost:4000/data/${id}`);
+        // this.files = this.files.filter((val) => val.id !== id);
+        console.log("response", response);
+
+        if (response.status == 200 || response.status == 201) {
+          messageStore.setMessage(
+            "success",
+            "",
+            "El reporte se ha eliminado con exito"
+          );
+          console.log("Alta exitosa");
+        } else {
+          messageStore.setMessage(
+            "error",
+            "A ocurrido un error",
+            "Error al eliminar el reporte"
+          );
+          console.log("Error");
+        }
       } catch (error) {
         console.error("Error:", error);
       }

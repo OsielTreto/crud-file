@@ -1,0 +1,18 @@
+.title {
+  background-color: red;
+}
+
+.dialog {
+  border-radius: 10px;
+  background-color: white;
+}
+
+.btn-close {
+  font-size: 20px;
+}
+
+.dialog-confirm {
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+}
