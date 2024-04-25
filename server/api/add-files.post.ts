@@ -1,7 +1,7 @@
 import { File } from "../models/file.model";
 
 export default defineEventHandler(async (event) => {
-  console.log("event ", event);
+  // console.log("event ", event);
   // if (!event.request.files || !event.request.files.pdf) {
   //   return new Response("No se proporcionó un archivo PDF", { status: 400 });
   // }

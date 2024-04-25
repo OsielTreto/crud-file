@@ -1,5 +1,5 @@
 <template>
-  <VDialog persistent v-model="show" width="auto">
+  <VDialog persistent v-model="show" width="50vw">
     <!-- <v-card
       :text="`¿Desea ${action} el reporte ${reporte}?`"
       :title=""
@@ -17,7 +17,9 @@
         <VCol cols="12 " class="text-uppercase text-h5">
           {{ `${action} reporte` }}
         </VCol>
-        <VCol cols="12"> {{ `¿Desea ${action} el reporte ${reporte}?` }} </VCol>
+        <VCol cols="12">
+          {{ `¿Está seguro que desea ${action} el reporte ${reporte}?` }}
+        </VCol>
         <VCol cols="12" md="3" offset="6">
           <VBtn
             class="mt-2"

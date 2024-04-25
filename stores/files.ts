@@ -14,13 +14,19 @@ export const useFilesStore = defineStore("files", {
 
   actions: {
     async getFiles() {
+      const messageStore = useMessageStore();
+
       try {
         const { data } = await axios.get("http://localhost:4000/data");
 
         this.files = data as any;
-        console.log("getFiles ");
+        // console.log("getFiles ");
       } catch (error) {
-        console.error("Error:", error);
+        messageStore.setMessage(
+          "error",
+          "Ha ocurrido un error",
+          "Error al consultar: " + error
+        );
       }
     },
 
@@ -29,74 +35,105 @@ export const useFilesStore = defineStore("files", {
       fechaReporte: string;
       file: string;
     }) {
+      const messageStore = useMessageStore();
       try {
-        const messageStore = useMessageStore();
-
         // await axios.post("/api/add-files", body, {
         const response = await axios.post("http://localhost:4000/data", body);
-        console.log("response ", response.status);
+        // console.log("response ", response.status);
 
         if (response.status == 200 || response.status == 201) {
           messageStore.setMessage(
             "success",
             "Alta exitosa",
-            "El reporte se ha guardado con exito"
+            "El reporte se ha guardado con éxito"
           );
-          console.log("Alta exitosa");
+          // console.log("Alta exitosa");
         } else {
           messageStore.setMessage(
             "error",
-            "A ocurrido un error",
+            "Ha ocurrido un error",
             "Error al guardar el reporte"
           );
-          console.log("Error");
+          // console.log("Error");
         }
 
         // navigateTo("/");
       } catch (error) {
-        console.error("Error:", error);
+        messageStore.setMessage(
+          "error",
+          "Ha ocurrido un error",
+          "Error al guardar: " + error
+        );
       }
     },
 
     async deleteFiles(id: string) {
+      const messageStore = useMessageStore();
       try {
-        const messageStore = useMessageStore();
-
         // await axios.delete(`/api/delete-files/${id}`);
         const response = await axios.delete(`http://localhost:4000/data/${id}`);
         // this.files = this.files.filter((val) => val.id !== id);
-        console.log("response", response);
+        // console.log("response", response);
 
         if (response.status == 200 || response.status == 201) {
           messageStore.setMessage(
             "success",
             "",
-            "El reporte se ha eliminado con exito"
+            "El reporte se ha eliminado con éxito"
           );
-          console.log("Alta exitosa");
+          // console.log("Alta exitosa");
         } else {
           messageStore.setMessage(
             "error",
-            "A ocurrido un error",
+            "Ha ocurrido un error",
             "Error al eliminar el reporte"
           );
-          console.log("Error");
+          // console.log("Error");
         }
       } catch (error) {
-        console.error("Error:", error);
+        messageStore.setMessage(
+          "error",
+          "Ha ocurrido un error",
+          "Error al eliminar: " + error
+        );
       }
     },
 
     setFileActual(files: IFiles | null) {
       this.fileActual = files;
+      // console.log("this.fileActual ", this.fileActual);
     },
 
-    async editFiles(body: IFiles) {
+    async editFiles(id: string, body: IFiles) {
+      const messageStore = useMessageStore();
       try {
-        await axios.patch("/api/edit-files", body);
-        navigateTo("/");
+        // await axios.patch("/api/edit-files", body);
+        const response = await axios.put(
+          `http://localhost:4000/data/${id}`,
+          body
+        );
+        if (response.status == 200 || response.status == 201) {
+          messageStore.setMessage(
+            "success",
+            "Actualizacion exitosa",
+            "El reporte se ha actualizado con exito"
+          );
+          // console.log("Alta exitosa");
+        } else {
+          messageStore.setMessage(
+            "error",
+            "Ha ocurrido un error",
+            "Error al actualizar el reporte"
+          );
+          // console.log("Error");
+        }
       } catch (error) {
-        console.error("Error al actualizar:", error);
+        // console.error("Error al actualizar:", error);
+        messageStore.setMessage(
+          "error",
+          "Ha ocurrido un error",
+          "Error al actualizar: " + error
+        );
       }
     },
   },

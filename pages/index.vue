@@ -1,63 +1,73 @@
 <template>
   <VContainer>
-    <VRow>
-      <VCol cols="12" class="text-h4 pa-5">Reportes</VCol>
-      <VCol cols="3">
-        <VBtn block variant="tonal" @click="getFiles()"> Consultar </VBtn>
-      </VCol>
+    <v-card>
+      <v-card-title class="text-h4 pa-5 text-uppercase os-title"
+        >Reportes</v-card-title
+      >
+      <v-card-text>
+        <VRow>
+          <!-- <VCol cols="3">
+            <VBtn color="primary" block variant="flat" @click="getFiles()">
+              Consultar
+            </VBtn>
+          </VCol> -->
 
-      <VCol cols="12">
-        <v-card flat>
-          <template v-slot:text>
-            <VTextField
-              v-model="search"
-              label="Filtrar"
-              prepend-inner-icon="mdi-magnify"
-              variant="outlined"
-              hide-details
-              single-line
-            />
-          </template>
+          <VCol cols="12">
+            <v-card flat>
+              <template v-slot:text>
+                <VTextField
+                  v-model="search"
+                  label="Filtrar"
+                  prepend-inner-icon="mdi-magnify"
+                  variant="outlined"
+                  hide-details
+                  single-line
+                />
+              </template>
 
-          <VDataTable :headers="headers" :items="files" :search="search">
-            <template v-slot:item.acciones="{ item }">
-              <VBtn
-                variant="text"
-                color="warning"
-                icon="mdi-file-edit"
-                @click="navegarFormulario(item)"
-              />
-              <VBtn
-                variant="text"
-                color="error"
-                icon="mdi-delete"
-                @click="handleDelete(item)"
-              />
-            </template>
+              <VDataTable :headers="headers" :items="files" :search="search">
+                <template v-slot:item.acciones="{ item }">
+                  <VBtn
+                    variant="plain"
+                    color="secondary"
+                    icon="mdi-file-edit"
+                    @click="navegarFormulario(item)"
+                  />
+                  <VBtn
+                    variant="plain"
+                    color="secondary"
+                    icon="mdi-delete"
+                    @click="handleDelete(item)"
+                  />
+                </template>
 
-            <template v-slot:item.documento="{ item }">
+                <template v-slot:item.documento="{ item }">
+                  <VBtn
+                    variant="plain"
+                    color="primary"
+                    prepend-icon="mdi-file-document"
+                    @click="handlePDF(item)"
+                  >
+                    {{ item.file.nombreArchivo }}</VBtn
+                  >
+                </template>
+              </VDataTable>
+            </v-card>
+          </VCol>
+
+          <VRow justify="end">
+            <VCol cols="auto" class="pa-5">
               <VBtn
-                variant="text"
                 color="primary"
-                prepend-icon="mdi-file-document"
-                @click="navegarFormulario(item)"
-              >
-                {{ item.file.nombreArchivo }}</VBtn
-              >
-            </template>
-          </VDataTable>
-        </v-card>
-      </VCol>
-    </VRow>
-    <VRow justify="end">
-      <VCol cols="auto">
-        <VBtn
-          color="primary"
-          icon="mdi-plus"
-          @click="navigateTo('/formularioFiles')"
-        />
-      </VCol>
-    </VRow>
+                icon="mdi-plus"
+                @click="navigateTo('/formularioFiles')"
+              />
+            </VCol>
+          </VRow>
+        </VRow>
+      </v-card-text>
+    </v-card>
+
     <DialogConfirm
       :show="show"
       :action="action"
@@ -70,6 +80,8 @@
       "
       @confirm="handleDeleteFiles()"
     />
+
+    <DialogPDF :show="showPDF" :file="archivo" @close="showPDF = false" />
   </VContainer>
 </template>
 
@@ -91,13 +103,13 @@ const headers = ref([
     title: "Fecha",
   },
   {
-    align: "start",
+    align: "center",
     key: "documento",
     title: "Archivo",
     sortable: false,
   },
   {
-    align: "start",
+    align: "center",
     key: "acciones",
     title: "Acciones",
     sortable: false,
@@ -118,7 +130,7 @@ const action = ref<string | null>(null);
 const show = ref<boolean>(false);
 
 const handleDelete = (file: IFiles) => {
-  console.log(file);
+  // console.log(file);
   show.value = true;
   reporte.value = file.nombreReporte;
   idReporte.value = file.id;
@@ -134,6 +146,14 @@ const handleDeleteFiles = async () => {
   await deleteFiles(idReporte.value);
   show.value = false;
   await getFiles();
+};
+
+const showPDF = ref<boolean>(false);
+const archivo = ref<object>({});
+
+const handlePDF = (file: IFiles) => {
+  showPDF.value = true;
+  archivo.value = file.file;
 };
 </script>
 

@@ -16,3 +16,49 @@
   padding: 20px;
   border-radius: 15px;
 }
+
+.os-contenedor {
+  border-radius: 15px;
+  box-shadow: -1px 1px 17px -1px rgba(148, 148, 148, 0.78);
+}
+
+.os-title {
+  font-family: "Signika", sans-serif;
+}
+
+.osiel {
+  font-family: "Signika", sans-serif;
+  color: rgb(255, 255, 255);
+  font-size: 4rem;
+}
+
+.desarrollador {
+  font-family: "Signika", sans-serif;
+  color: rgb(29, 29, 29);
+  font-size: 4rem;
+}
+
+.redsocial_inicio {
+  font-size: 30px !important;
+  color: white !important;
+  padding: 10px;
+  transition: all 0.3s;
+}
+
+.redsocial_inicio:hover {
+  text-shadow: 0 0 15px #ffffff93;
+  transform: scale(1.2);
+  color: rgb(0, 103, 71);
+}
+
+.MarcoCamara {
+  background: linear-gradient(
+    150deg,
+    #fd8f00,
+    #c20000,
+    #fd7200,
+    #c20000
+  ) !important;
+  background-size: 400% 400% !important;
+  animation: moverGradiente 2s ease infinite alternate;
+}

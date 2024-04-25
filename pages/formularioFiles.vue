@@ -19,6 +19,7 @@ import { ref } from "vue";
 
 let selectedFile = ref<File | null>(null);
 let selectedDate = ref<string | null>(null);
+let sizeFile = ref<string | null>(null);
 let base64String = ref<string | null>(null);
 let json: {
   nombreArchivo: string | undefined;
@@ -36,11 +37,31 @@ let form = reactive({
 });
 
 const convertAndSave = async () => {
-  if (selectedFile) {
+  // console.log("selectedFile ", Object.keys(obj.selectedFile).length);
+  if (Object.keys(selectedFile).length == 1) {
+    // console.log("usar mismo base64");
+    // console.log("fileActual.value ", fileActual.value);
+
+    json = {
+      nombreArchivo: fileActual.value.file.nombreArchivo,
+      extension: fileActual.value.file.extension,
+      size: fileActual.value.file.size,
+      contenidoBase64: fileActual.value.file.contenidoBase64,
+    };
+
+    await editFiles(fileActual.value.id, {
+      ...form,
+      fechaReporte: selectedDate,
+      file: json,
+    });
+  } else if (selectedFile) {
     const reader = new FileReader();
 
     reader.onload = async () => {
-      base64String.value = reader.result as string;
+      const result = reader.result as string;
+      const base64Only = result.split(";base64,")[1];
+
+      base64String.value = base64Only;
       await saveToJson();
     };
 
@@ -54,28 +75,33 @@ const saveToJson = async () => {
   json = {
     nombreArchivo: selectedFile.name,
     extension: selectedFile.type,
+    size: sizeFile,
     contenidoBase64: base64String.value,
   };
-  console.log("saveToJson", json);
-
-  console.log("send", { ...form, fecha: selectedDate, file: json });
-  await addFiles({ ...form, fechaReporte: selectedDate, file: json }); // Ahora json está disponible
+  // console.log("saveToJson", json);
+  if (fileActual.value) {
+    await editFiles(fileActual.value.id, {
+      ...form,
+      fechaReporte: selectedDate,
+      file: json,
+    });
+  } else {
+    await addFiles({ ...form, fechaReporte: selectedDate, file: json }); // Ahora json está disponible
+  }
 };
 
 const guardarForm = async (obj: any) => {
   selectedDate = obj.fechaReporte;
   selectedFile = obj.selectedFile;
   form.nombreReporte = obj.nombreReporte;
-
+  sizeFile = obj.sizeFile;
   await procesarFormulario();
 };
 
 const procesarFormulario = async () => {
   loading.value = true;
   await convertAndSave(); // Espera a que convertAndSave() se complete
-  if (fileActual.value) {
-    await editFiles({ ...form, _id: fileActual.value._id });
-  }
+
   loading.value = false;
 };
 

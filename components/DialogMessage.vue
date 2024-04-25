@@ -20,13 +20,15 @@ const { typeDialog, message, title } = storeToRefs(messageStore);
 const show = computed(() => (typeDialog.value ? true : false));
 
 const handleClose = () => {
-  console.log("handleClose");
+  // console.log("handleClose");
   if (typeDialog.value == "success") {
-    console.log("success");
+    // console.log("success");
     messageStore.cleanDialog();
     navigateTo("/");
   } else if (typeDialog.value == "warning") {
-    console.log("warning");
+    // console.log("warning");
+    messageStore.cleanDialog();
+  } else {
     messageStore.cleanDialog();
   }
 };
