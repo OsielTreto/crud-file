@@ -126,16 +126,13 @@
 import { defineComponent, ref } from "vue";
 
 function formatearFecha(fecha: Date): string {
-  // Obtener los componentes de la fecha
   const dia = fecha.getDate();
-  const mes = fecha.getMonth() + 1; // Los meses van de 0 a 11
+  const mes = fecha.getMonth() + 1;
   const año = fecha.getFullYear();
 
-  // Formatear los componentes con ceros a la izquierda si es necesario
   const diaFormateado = dia < 10 ? `0${dia}` : `${dia}`;
   const mesFormateado = mes < 10 ? `0${mes}` : `${mes}`;
 
-  // Devolver la fecha en formato dd/mm/aaaa
   return `${diaFormateado}/${mesFormateado}/${año}`;
 }
 

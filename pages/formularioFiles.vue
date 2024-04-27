@@ -7,7 +7,6 @@
           :title="title"
           @handleForm="guardarForm"
           @cancel="navigateTo('/')"
-          :form="form"
         />
       </VCol>
     </VRow>
@@ -67,7 +66,7 @@ const convertAndSave = async () => {
 
     reader.readAsDataURL(selectedFile);
   } else {
-    console.error("No se ha seleccionado ningún archivo.");
+    // console.error("No se ha seleccionado ningún archivo.");
   }
 };
 
@@ -100,7 +99,7 @@ const guardarForm = async (obj: any) => {
 
 const procesarFormulario = async () => {
   loading.value = true;
-  await convertAndSave(); // Espera a que convertAndSave() se complete
+  await convertAndSave();
 
   loading.value = false;
 };

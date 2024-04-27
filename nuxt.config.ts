@@ -11,7 +11,9 @@ export default defineNuxtConfig({
   },
   modules: ["@pinia/nuxt"],
   runtimeConfig: {
-    MONGO_URI: process.env.MONGO_URI,
+    public: {
+      apiBase: process.env.API_URL,
+    },
   },
   imports: {
     dirs: ["stores"],

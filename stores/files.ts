@@ -14,10 +14,11 @@ export const useFilesStore = defineStore("files", {
 
   actions: {
     async getFiles() {
+      const { apiBase } = useRuntimeConfig().public;
       const messageStore = useMessageStore();
 
       try {
-        const { data } = await axios.get("http://localhost:4000/data");
+        const { data } = await axios.get(`${apiBase}`);
 
         this.files = data as any;
         // console.log("getFiles ");
@@ -35,10 +36,12 @@ export const useFilesStore = defineStore("files", {
       fechaReporte: string;
       file: string;
     }) {
+      const { apiBase } = useRuntimeConfig().public;
+
       const messageStore = useMessageStore();
       try {
         // await axios.post("/api/add-files", body, {
-        const response = await axios.post("http://localhost:4000/data", body);
+        const response = await axios.post(`${apiBase}`, body);
         // console.log("response ", response.status);
 
         if (response.status == 200 || response.status == 201) {
@@ -68,10 +71,12 @@ export const useFilesStore = defineStore("files", {
     },
 
     async deleteFiles(id: string) {
+      const { apiBase } = useRuntimeConfig().public;
+
       const messageStore = useMessageStore();
       try {
         // await axios.delete(`/api/delete-files/${id}`);
-        const response = await axios.delete(`http://localhost:4000/data/${id}`);
+        const response = await axios.delete(`${apiBase}/${id}`);
         // this.files = this.files.filter((val) => val.id !== id);
         // console.log("response", response);
 
@@ -105,13 +110,12 @@ export const useFilesStore = defineStore("files", {
     },
 
     async editFiles(id: string, body: IFiles) {
+      const { apiBase } = useRuntimeConfig().public;
+
       const messageStore = useMessageStore();
       try {
         // await axios.patch("/api/edit-files", body);
-        const response = await axios.put(
-          `http://localhost:4000/data/${id}`,
-          body
-        );
+        const response = await axios.put(`${apiBase}/${id}`, body);
         if (response.status == 200 || response.status == 201) {
           messageStore.setMessage(
             "success",

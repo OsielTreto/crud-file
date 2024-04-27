@@ -11,8 +11,13 @@
               Consultar
             </VBtn>
           </VCol> -->
-
           <VCol cols="12">
+            <Table :columns="headers" :data="files">
+              <!-- <template #item.acciones=""> hola </template> -->
+            </Table>
+          </VCol>
+
+          <!-- <VCol cols="12">
             <v-card flat>
               <template v-slot:text>
                 <VTextField
@@ -53,7 +58,7 @@
                 </template>
               </VDataTable>
             </v-card>
-          </VCol>
+          </VCol> -->
 
           <VRow justify="end">
             <VCol cols="auto" class="pa-5">
