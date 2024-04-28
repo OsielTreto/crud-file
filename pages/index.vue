@@ -11,13 +11,13 @@
               Consultar
             </VBtn>
           </VCol> -->
-          <VCol cols="12">
-            <Table :columns="headers" :data="files">
-              <!-- <template #item.acciones=""> hola </template> -->
-            </Table>
-          </VCol>
+          <!-- <VCol cols="12"> -->
+          <!-- <Table :columns="headers" :data="files"> -->
+          <!-- <template #item.acciones=""> hola </template> -->
+          <!-- </Table> -->
+          <!-- </VCol> -->
 
-          <!-- <VCol cols="12">
+          <VCol cols="12">
             <v-card flat>
               <template v-slot:text>
                 <VTextField
@@ -30,7 +30,12 @@
                 />
               </template>
 
-              <VDataTable :headers="headers" :items="files" :search="search">
+              <VDataTable
+                :headers="headers"
+                :items="files"
+                :search="search"
+                :items-per-page-options="pageOptions"
+              >
                 <template v-slot:item.acciones="{ item }">
                   <VBtn
                     variant="plain"
@@ -58,7 +63,7 @@
                 </template>
               </VDataTable>
             </v-card>
-          </VCol> -->
+          </VCol>
 
           <VRow justify="end">
             <VCol cols="auto" class="pa-5">
@@ -95,6 +100,13 @@ import { ref } from "vue";
 import { storeToRefs } from "pinia";
 
 const search = ref("");
+const pageOptions = ref([
+  { value: 5, title: "5" },
+  { value: 10, title: "10" },
+  { value: 50, title: "50" },
+  { value: 100, title: "100" },
+  { value: -1, title: "$vuetify.dataFooter.itemsPerPageAll" },
+]);
 const headers = ref([
   {
     align: "start",

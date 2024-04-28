@@ -5,7 +5,7 @@
         >{{ title }} reporte</v-card-title
       >
       <v-card-text>
-        <VForm @submit.prevent="save" class="pa-5">
+        <VForm ref="formAdd" @submit.prevent="save" class="pa-5">
           <VRow>
             <VCol cols="12" md="6">
               <VTextField
@@ -13,6 +13,7 @@
                 mask="/^[a-zA-Z\s]*$/"
                 v-model="nombreReporte"
                 label="Nombre"
+                :rules="[(value) => !!value || 'Nombre es requerido.']"
               />
             </VCol>
             <VCol cols="12" md="6">
@@ -21,10 +22,11 @@
                   <VTextField
                     variant="solo"
                     v-model="date"
-                    label="Seleccionar fecha"
+                    label="Fecha"
                     prepend-inner-icon="mdi-calendar-range"
                     readonly
                     v-bind="activatorProps"
+                    :rules="[(value) => !!value || 'Fecha es requerido.']"
                   ></VTextField>
                 </template>
 
@@ -69,10 +71,14 @@
               <VFileInput
                 variant="solo"
                 v-model="selectedFile"
-                label="Seleccionar archivo"
+                label="Archivo"
                 accept=".pdf"
                 prepend-icon=""
                 prepend-inner-icon="mdi-file"
+                :rules="[
+                  (value) =>
+                    !!value.length || `El archivo es requerido ${value}`,
+                ]"
               />
             </VCol>
 
@@ -146,7 +152,6 @@ function formatBytes(bytes: number): string {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
 }
 
-const messageStore = useMessageStore();
 const fileStore = useFilesStore();
 
 const { fileActual } = storeToRefs(fileStore);
@@ -166,7 +171,8 @@ export default defineComponent({
       selectedDate: null,
       dateFormat: "DD/MM/YYYY",
       //   selectedDate: ref<string | null>(null),
-      selectedFile: ref<File | null>(null),
+      // selectedFile: ref<File | null>(null),
+      selectedFile: null,
       loading: false,
       customFormat: "DD/MM/YYYY",
     };
@@ -174,7 +180,7 @@ export default defineComponent({
 
   created() {
     // console.log("fileActual ", fileActual.value.file);
-    if (fileActual.value) {
+    if (!!fileActual && !!fileActual.value) {
       this.nombreReporte = fileActual.value.nombreReporte;
       this.date = fileActual.value.fechaReporte;
       // console.log("fileActual.value.file ", fileActual.value.file);
@@ -185,18 +191,17 @@ export default defineComponent({
     }
   },
 
-  methods: {
-    save() {
-      if (!this.nombreReporte || !this.date || !this.selectedFile) {
-        messageStore.setMessage(
-          "warning",
-          "Apreciable usuario",
-          "Ingrese los campos faltantes"
-        );
-      } else {
-        // console.log("emit handleForm");
+  computed: {
+    fileRules() {
+      return [(value) => !!value || "El archivo es requerido."];
+    },
+  },
 
-        // console.log(formatBytes(this.selectedFile.size));
+  methods: {
+    async save(event) {
+      const result = await event;
+
+      if (!!result.valid) {
         this.$emit("handleForm", {
           nombreReporte: this.nombreReporte,
           fechaReporte: this.date,
@@ -204,6 +209,12 @@ export default defineComponent({
           sizeFile: formatBytes(this.selectedFile.size),
         });
       }
+      // if (!!this.nombreReporte && !this.date && !this.selectedFile) {
+      // } else {
+      // console.log("emit handleForm");
+      // console.log(formatBytes(this.selectedFile.size));
+      //
+      // }
     },
 
     saveDate() {
