@@ -35,6 +35,9 @@
                 :items="files"
                 :search="search"
                 :items-per-page-options="pageOptions"
+                items-per-page-text="Registros por página:"
+                no-data-text="No hay registros"
+                page-text="{0}-{1} de {2}"
               >
                 <template v-slot:item.acciones="{ item }">
                   <VBtn
@@ -105,7 +108,7 @@ const pageOptions = ref([
   { value: 10, title: "10" },
   { value: 50, title: "50" },
   { value: 100, title: "100" },
-  { value: -1, title: "$vuetify.dataFooter.itemsPerPageAll" },
+  { value: -1, title: "Todos los registros" },
 ]);
 const headers = ref([
   {
