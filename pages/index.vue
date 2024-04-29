@@ -38,6 +38,7 @@
                 items-per-page-text="Registros por página:"
                 no-data-text="No hay registros"
                 page-text="{0}-{1} de {2}"
+                items-per-page="5"
               >
                 <template v-slot:item.acciones="{ item }">
                   <VBtn
@@ -106,8 +107,7 @@ const search = ref("");
 const pageOptions = ref([
   { value: 5, title: "5" },
   { value: 10, title: "10" },
-  { value: 50, title: "50" },
-  { value: 100, title: "100" },
+  { value: 50, title: "30" },
   { value: -1, title: "Todos los registros" },
 ]);
 const headers = ref([

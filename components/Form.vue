@@ -37,6 +37,8 @@
                       full-width
                       v-model="selectedDate"
                       shortDate
+                      header="Seleccione la fecha"
+                      title="Fecha del reporte"
                     ></v-date-picker>
 
                     <VCol cols="6">
